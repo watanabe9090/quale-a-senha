@@ -4,11 +4,9 @@ WORKDIR /app
 
 COPY . .
 
-RUN go mod download
+RUN go mod download && CGO_ENABLED=0 GOOS=linux go build -o /quale-a-senha
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /quale-a-senha
-
-FROM gcr.io/distroless/base-debian12
+FROM gcr.io/distroless/base-debian12:nonroot
 
 COPY --from=build /quale-a-senha /quale-a-senha
 
